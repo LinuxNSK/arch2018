@@ -4,7 +4,7 @@ read -p "Введите имя пользователя: " username
 
 echo 'Прописываем имя компьютера'
 echo $hostname > /etc/hostname
-ln -svf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
+ln -svf /usr/share/zoneinfo/Asia/Novosibirsk /etc/localtime
 
 echo '3.4 Добавляем русскую локаль системы'
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
@@ -35,13 +35,13 @@ echo 'Ставим программу для Wi-fi'
 pacman -S dialog wpa_supplicant --noconfirm 
 
 echo 'Добавляем пользователя'
-useradd -m -g users -G wheel -s /bin/bash $username
+useradd -m -g users -G wheel -s /bin/bash linuxnsk
 
 echo 'Создаем root пароль'
 passwd
 
 echo 'Устанавливаем пароль пользователя'
-passwd $username
+passwd linuxnsk
 
 echo 'Устанавливаем SUDO'
 echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
@@ -59,22 +59,22 @@ elif [[ $vm_setting == 1 ]]; then
   gui_install="xorg-server xorg-drivers xorg-xinit virtualbox-guest-utils"
 fi
 
-echo 'Ставим иксы и драйвера'
-pacman -S $gui_install
+#echo 'Ставим иксы и драйвера'
+#pacman -S $gui_install
 
 echo "Какое DE ставим?"
-read -p "1 - XFCE, 2 - KDE, 3 - Openbox: " vm_setting
+read -p "1 - XFCE, 2 - icewm, 3 - Openbox: " vm_setting
 if [[ $vm_setting == 1 ]]; then
   pacman -S xfce4 xfce4-goodies --noconfirm
 elif [[ $vm_setting == 2 ]]; then
-  pacman -Sy plasma-meta kdebase --noconfirm
+  pacman -S icewm --noconfirm
 elif [[ $vm_setting == 3 ]]; then  
   pacman -S  openbox xfce4-terminal
 fi
 
 echo 'Cтавим DM'
-pacman -S lxdm --noconfirm
-systemctl enable lxdm
+pacman -S lightdm --noconfirm
+systemctl enable lightdm
 
 echo 'Ставим шрифты'
 pacman -S ttf-liberation ttf-dejavu --noconfirm 
